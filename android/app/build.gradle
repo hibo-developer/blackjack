@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 
+// Compatibilidad con Android Studio que aun consulta esta tarea de modelo Kotlin.
+if (!tasks.findByName("prepareKotlinBuildScriptModel")) {
+    tasks.register("prepareKotlinBuildScriptModel")
+}
+
 android {
     namespace = "com.blackjack.app"
     compileSdk = rootProject.ext.compileSdkVersion
