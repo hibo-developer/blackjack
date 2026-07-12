@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Blackjack</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test de Funcionalidad Blackjack</h1>
+    <div id="test-results"></div>
+    
+    <script type="module">
+        const testResults = document.getElementById('test-results');
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            testResults.appendChild(div);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        async function runTests() {
+            addResult('Iniciando pruebas del juego Blackjack...', 'info');
+            
+            try {
+                // Test 1: Verificar que Underscore está disponible
+                if (typeof _ === 'undefined') {
+                    addResult('❌ Underscore no está disponible', 'fail');
+                } else {
+                    addResult('✅ Underscore está disponible', 'pass');
+                }
+                
+                // Test 2: Verificar funciones del juego
+                if (typeof crearBaraja === 'function') {
+                    addResult('✅ Función crearBaraja disponible', 'pass');
+                } else {
+                    addResult('❌ Función crearBaraja no disponible', 'fail');
+                }
+                
+                if (typeof pedirCarta === 'function') {
+                    addResult('✅ Función pedirCarta disponible', 'pass');
+                } else {
+                    addResult('❌ Función pedirCarta no disponible', 'fail');
+                }
+                
+                if (typeof valorCarta === 'function') {
+                    addResult('✅ Función valorCarta disponible', 'pass');
+                } else {
+                    addResult('❌ Función valorCarta no disponible', 'fail');
+                }
+                
+                // Test 3: Probar crearBaraja
+                try {
+                    const baraja = crearBaraja();
+                    if (Array.isArray(baraja) && baraja.length === 52) {
+                        addResult(`✅ Baraja creada correctamente (${baraja.length} cartas)`, 'pass');
+                    } else {
+                        addResult(`❌ Baraja incorrecta: ${baraja.length} cartas`, 'fail');
+                    }
+                } catch (error) {
+                    addResult(`❌ Error al crear baraja: ${error}`, 'fail');
+                }
+                
+                // Test 4: Probar valorCarta
+                try {
+                    const testCases = [
+                        { carta: '2C', expected: 2 },
+                        { carta: '10H', expected: 10 },
+                        { carta: 'JC', expected: 10 },
+                        { carta: 'QC', expected: 10 },
+                        { carta: 'KC', expected: 10 },
+                        { carta: 'AD', expected: 11 }
+                    ];
+                    
+                    let allPassed = true;
+                    testCases.forEach(test => {
+                        const result = valorCarta(test.carta);
+                        if (result === test.expected) {
+                            addResult(`✅ valorCarta("${test.carta}") = ${result}`, 'pass');
+                        } else {
+                            addResult(`❌ valorCarta("${test.carta}") = ${result}, esperado: ${test.expected}`, 'fail');
+                            allPassed = false;
+                        }
+                    });
+                    
+                    if (allPassed) {
+                        addResult('✅ Todas las pruebas de valorCarta pasaron', 'pass');
+                    }
+                } catch (error) {
+                    addResult(`❌ Error en valorCarta: ${error}`, 'fail');
+                }
+                
+                // Test 5: Probar pedirCarta
+                try {
+                    crearBaraja(); // Reiniciar baraja
+                    const carta = pedirCarta();
+                    if (carta && typeof carta === 'string' && carta.length >= 2) {
+                        addResult(`✅ Carta tomada: ${carta}`, 'pass');
+                    } else {
+                        addResult(`❌ Carta inválida: ${carta}`, 'fail');
+                    }
+                } catch (error) {
+                    addResult(`❌ Error al pedir carta: ${error}`, 'fail');
+                }
+                
+                addResult('Pruebas completadas. Revisa la consola para más detalles.', 'info');
+                
+            } catch (error) {
+                addResult(`❌ Error general en pruebas: ${error}`, 'fail');
+            }
+        }
+        
+        // Esperar a que se carguen las funciones del juego
+        setTimeout(runTests, 1000);
+    </script>
+</body>
+</html>

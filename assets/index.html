@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackjack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+    <main class="mesa">
+        <header class="titulo">
+            <p class="titulo-sub">Mesa Clasica</p>
+            <h1>Blackjack</h1>
+        </header>
+
+        <section class="tablero container">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <article class="zona zona-jugador">
+                        <div class="zona-cabecera">
+                            <h2>Jugador</h2>
+                            <p id="jugador-puntos">Puntos: 0</p>
+                        </div>
+                        <div id="jugador-cartas" class="zona-cartas"></div>
+                    </article>
+                </div>
+
+                <div class="col-lg-6">
+                    <article class="zona zona-crupier">
+                        <div class="zona-cabecera">
+                            <h2>Crupier</h2>
+                            <p id="crupier-puntos">Puntos: 0</p>
+                        </div>
+                        <div id="crupier-cartas" class="zona-cartas"></div>
+                    </article>
+                </div>
+            </div>
+
+            <section class="controles mt-4" aria-label="Acciones del juego">
+                <button id="pedir-carta" class="btn btn-primary">Pedir Carta</button>
+                <button id="plantarse" class="btn btn-secondary">Plantarse</button>
+                <button id="doblar" class="btn btn-warning">Doblar</button>
+                <button id="dividir" class="btn btn-info">Dividir</button>
+                <button id="reiniciar" class="btn btn-danger">Reiniciar</button>
+            </section>
+
+            <section class="estado-juego mt-3" aria-label="Estado de partida">
+                <article class="estado-card">
+                    <p class="estado-label">Marcador</p>
+                    <div class="marcador-grid">
+                        <span>Victorias: <strong id="marcador-victorias">0</strong></span>
+                        <span>Derrotas: <strong id="marcador-derrotas">0</strong></span>
+                        <span>Empates: <strong id="marcador-empates">0</strong></span>
+                    </div>
+                    <div class="control-line mt-2">
+                        <label for="apuesta-input">Apuesta por mano</label>
+                        <input id="apuesta-input" class="form-control form-control-sm" type="number" min="10" step="10" value="50" />
+                    </div>
+                    <div class="apuesta-rapida mt-2">
+                        <button id="apuesta-plus-10" class="btn btn-info btn-sm" type="button">+10</button>
+                        <button id="apuesta-plus-50" class="btn btn-info btn-sm" type="button">+50</button>
+                        <button id="apuesta-all-in" class="btn btn-warning btn-sm" type="button">All-in</button>
+                    </div>
+                    <p id="saldo-estado" class="estado-texto">Saldo: $1000</p>
+                    <p id="apuesta-estado" class="estado-texto">Apuesta activa: $0</p>
+                    <button id="reset-estadisticas" class="btn btn-secondary btn-sm mt-2">Reset estadisticas</button>
+                </article>
+
+                <article class="estado-card">
+                    <p class="estado-label">Regla del Crupier</p>
+                    <label class="switch-line" for="soft17-toggle">
+                        <input id="soft17-toggle" type="checkbox" />
+                        <span>Crupier pide carta en soft 17</span>
+                    </label>
+                    <div class="control-line mt-2">
+                        <label for="ia-crupier">Perfil IA</label>
+                        <select id="ia-crupier" class="form-select form-select-sm">
+                            <option value="facil">Facil</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="dificil">Dificil</option>
+                        </select>
+                    </div>
+                    <p id="soft17-estado" class="estado-texto">Modo actual: Crupier se planta en soft 17.</p>
+                    <p id="ia-estado" class="estado-texto">IA actual: Normal.</p>
+                    <label class="switch-line mt-2" for="sonido-toggle">
+                        <input id="sonido-toggle" type="checkbox" checked />
+                        <span>Sonidos del juego</span>
+                    </label>
+                    <div class="control-line mt-2">
+                        <label for="volumen-sonido">Volumen</label>
+                        <input id="volumen-sonido" type="range" min="0" max="100" step="1" value="60" />
+                    </div>
+                    <div class="control-line mt-2">
+                        <label for="pack-sonido">Pack de sonido</label>
+                        <select id="pack-sonido" class="form-select form-select-sm">
+                            <option value="clasico" selected>Clasico</option>
+                            <option value="suave">Suave</option>
+                            <option value="retro">Retro</option>
+                        </select>
+                    </div>
+                    <p id="sonido-estado" class="estado-texto">Sonido: Activado.</p>
+                    <p id="volumen-estado" class="estado-texto">Volumen: 60%.</p>
+                    <p id="pack-estado" class="estado-texto">Pack: Clasico.</p>
+                </article>
+
+                <article class="estado-card">
+                    <p class="estado-label">Historial</p>
+                    <ul id="historial-manos" class="historial-lista"></ul>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <script type="module" src="assets/js/juego.js"></script>
+</body>
+
+</html>
