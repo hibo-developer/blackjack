@@ -1,4 +1,4 @@
-package com.blackjack.app;
+package hibo.software.blackjack;
 
 import com.getcapacitor.BridgeActivity;
 
